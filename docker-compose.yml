@@ -1,0 +1,6 @@
+version: '2.3'
+services:
+  lc0:
+    build: .
+    runtime: nvidia
+    command: ./client_linux --user lc0docker --password lc0docker
