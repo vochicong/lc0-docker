@@ -3,7 +3,7 @@ under [NVIDIA docker](https://github.com/NVIDIA/nvidia-docker).
 
 # Run it
 
-    docker-compose up
+    docker-compose run --rm lc0
 
 # Requirements
 
