@@ -4,4 +4,3 @@ services:
     image: vochicong/lc0-nvidia-docker
     build: .
     runtime: nvidia
-    command: ./client_linux --user lc0docker --password lc0docker

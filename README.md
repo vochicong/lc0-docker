@@ -3,7 +3,13 @@ under [NVIDIA docker](https://github.com/NVIDIA/nvidia-docker).
 
 # Run it
 
-    docker-compose run --rm lc0
+To download and run the prebuilt Docker image
+
+    docker run --runtime nvidia --rm -it vochicong/lc0-nvidia-docker
+
+otherwise, clone this repository then build and run by
+
+    docker-compose up --build lc0
 
 # Requirements
 

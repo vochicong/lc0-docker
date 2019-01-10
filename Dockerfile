@@ -14,3 +14,5 @@ RUN curl -s -L https://github.com/LeelaChessZero/lczero-client/releases/latest |
         egrep -o '/LeelaChessZero/lczero-client/releases/download/v.*/client_linux' |\
         head -n 1 | wget --base=https://github.com/ -i - &&\
     chmod +x client_linux
+
+CMD ./client_linux --user lc0docker --password lc0docker
