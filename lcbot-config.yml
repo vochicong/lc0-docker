@@ -1,0 +1,40 @@
+token: "LICHESS_API_TOKEN"   # lichess OAuth2 Token
+url: "https://lichess.org/"  # lichess base URL
+
+engine:                      # engine settings
+  dir: "/lc0/bin"            # dir containing engines
+  name: "lc0"                # binary name of the engine to use
+  protocol: "uci"
+engine_options:              # any custom command line params to pass to the engine
+  silence_stderr: false      # some engines (yes you, leela) are very noisy
+
+abort_time: 20               # time to abort a game in seconds when there is no activity
+fake_think_time: false       # artificially slow down the bot to pretend like it's thinking
+
+challenge:                   # incoming challenges
+  concurrency: 1             # number of games to play simultaneously
+  sort_by: "best"            # possible values: "best", "first"
+  accept_bot: true          # accepts challenges coming from other bots
+  max_increment: 180         # maximum amount of increment to accaept a challenge. the max is 180. set to 0 for no increment
+  min_increment: 2           # minimum amount of increment to accept a challenge
+  variants:                  # chess variants to accept (http://lichess.org/variant)
+    - standard
+#   - fromPosition
+#   - antichess
+#   - atomic
+#   - chess960
+#   - crazyhouse
+#   - horde
+#   - kingOfTheHill
+#   - racingKings
+#   - threeCheck
+  time_controls:             # time controls to accept
+    # - ultraBullet
+    - bullet
+    - blitz
+    - rapid
+    - classical
+#   - correspondence
+  modes:                     # game modes to accept
+    - casual                 # unrated games
+    - rated                  # rated games - must comment if the engine doesn't try to win
