@@ -1,4 +1,5 @@
 Let's run [lc0](https://github.com/LeelaChessZero/lc0)
+and [lichess-bot](https://github.com/careless25/lichess-bot)
 under [NVIDIA docker](https://github.com/NVIDIA/nvidia-docker).
 
 # Run Lc0 self-play training games
