@@ -1,23 +1,25 @@
 version: '2.3'
 services:
   lc0: &lc0
-    image: vochicong/lc0-nvidia-docke
-    build: .
+    image: vochicong/lc0-nvidia-docker
+    build:
+      context: .
+      target: lc0
     runtime: nvidia
-    working_dir: /lc0/bin
 
   lcbot: &bot
     <<: *lc0
-    working_dir: /lcbot
+    build:
+      context: .
+      target: lcbot
     volumes:
       - ./lcbot-config.yml:/lcbot/configtmp.yml
       - ./lc0.config:/lc0/bin/lc0.config
       - ./data:/data
       - ./log:/lcbot/log
     command: >
-      sh -c " . .venv/bin/activate &&
-              sed "s/LICHESS_API_TOKEN/$LICHESS_API_TOKEN/" configtmp.yml > config.yml &&
-              head config.yml &&
+      sh -c " sed "s/LICHESS_API_TOKEN/$LICHESS_API_TOKEN/" configtmp.yml > config.yml &&
+              . .venv/bin/activate &&
               python lichess-bot.py
              "
 
