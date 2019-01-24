@@ -19,6 +19,7 @@ services:
       - ./log:/lcbot/log
     command: >
       sh -c " sed "s/LICHESS_API_TOKEN/$LICHESS_API_TOKEN/" configtmp.yml > config.yml &&
+              . .venv/bin/activate &&
               python lichess-bot.py
              "
 

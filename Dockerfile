@@ -1,14 +1,20 @@
-FROM nvidia/cuda:10.0-cudnn7-devel as base
+FROM nvidia/cuda:10.0-cudnn7-devel as lc0base
 RUN apt-get update &&\
     apt-get install -y libopenblas-base libprotobuf-dev &&\
     apt-get clean all
 
-FROM base as builder
+FROM lc0base as botbase
+RUN apt-get update &&\
+    apt-get install -y python3 &&\
+    apt-get clean all
+
+FROM botbase as builder
 RUN apt-get update &&\
     apt-get install -y curl wget supervisor git \
-            clang-6.0 libopenblas-dev ninja-build protobuf-compiler libprotobuf-dev python3-pip &&\
+            clang-6.0 libopenblas-dev ninja-build protobuf-compiler libprotobuf-dev \
+            python3-pip python3-venv &&\
     apt-get clean all
-RUN pip3 install meson
+RUN pip3 install meson wheel
 
 RUN git clone -b master --recurse-submodules https://github.com/LeelaChessZero/lc0.git /lc0
 WORKDIR /lc0
@@ -22,16 +28,20 @@ RUN curl -s -L https://github.com/LeelaChessZero/lczero-client/releases/latest |
 
 RUN git clone https://github.com/careless25/lichess-bot.git /lcbot
 WORKDIR /lcbot
-RUN pip3 install -r requirements.txt
+RUN python3 -m venv .venv &&\
+    . .venv/bin/activate &&\
+    pip3 install -r requirements.txt
 
-FROM base as lc0
+FROM lc0base as lc0
 COPY --from=builder /lc0/bin /lc0/bin
 WORKDIR /lc0/bin
 CMD ./client_linux --user lc0docker --password lc0docker
 
-FROM lc0 as lcbot
+FROM botbase as lcbot
+COPY --from=builder /lc0/bin /lc0/bin
 COPY --from=builder /lcbot /lcbot
 WORKDIR /lcbot
 
-FROM lc0
-COPY --from=builder /lcbot /lcbot
+FROM lcbot
+WORKDIR /lc0/bin
+CMD ./client_linux --user lc0docker --password lc0docker
