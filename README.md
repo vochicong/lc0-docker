@@ -1,4 +1,6 @@
-Let's run [lc0](https://github.com/LeelaChessZero/lc0)
+Let's run latest releases of
+[lc0](https://github.com/LeelaChessZero/lc0),
+[lczero-client](https://github.com/LeelaChessZero/lczero-client)
 and [lichess-bot](https://github.com/careless25/lichess-bot)
 under [NVIDIA docker](https://github.com/NVIDIA/nvidia-docker).
 
