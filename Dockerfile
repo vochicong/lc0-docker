@@ -20,7 +20,7 @@ RUN pip3 install meson wheel
 RUN curl -s -L https://github.com/LeelaChessZero/lc0/releases/latest |\
     egrep -o '/LeelaChessZero/lc0/archive/v.*.tar.gz' |\
     wget --base=https://github.com/ -O lc0latest.tgz -i - &&\
-    tar -xfz lc0latest.tgz && rm lc0latest.tgz && mv lc0* /lc0
+    tar xfz lc0latest.tgz && rm lc0latest.tgz && mv lc0* /lc0
 WORKDIR /lc0
 RUN CC=clang-6.0 CXX=clang++-6.0 INSTALL_PREFIX=/lc0 \
     ./build.sh release && ls /lc0/bin
