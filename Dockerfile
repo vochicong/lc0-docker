@@ -1,7 +1,7 @@
 FROM nvidia/cuda:10.0-cudnn7-runtime as lc0base
 RUN apt-get update &&\
     apt-get install -y libopenblas-base libprotobuf10 zlib1g-dev \
-            ocl-icd-libopencl1 &&\
+            ocl-icd-libopencl1 tzdata &&\
     apt-get clean all
 
 FROM lc0base as botbase

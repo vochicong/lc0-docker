@@ -6,6 +6,8 @@ services:
       context: .
       target: lc0
     runtime: nvidia
+    env_file:
+      - .env
 
   lcbot: &bot
     <<: *lc0
