@@ -13,7 +13,7 @@ FROM nvidia/cuda:10.0-cudnn7-devel as builder
 RUN apt-get update &&\
     apt-get install -y curl wget supervisor git \
             clang-6.0 libopenblas-dev ninja-build protobuf-compiler libprotobuf-dev \
-            python3-pip python3-venv &&\
+            python3-pip &&\
     apt-get clean all
 RUN pip3 install meson
 
@@ -31,6 +31,9 @@ RUN curl -s -L https://github.com/LeelaChessZero/lczero-client/releases/latest |
         head -n 1 | wget --base=https://github.com/ -i - &&\
     chmod +x client_linux
 
+FROM builder as botBuilder
+RUN apt-get update &&\
+    apt-get install -y python3-venv
 RUN git clone https://github.com/careless25/lichess-bot.git /lcbot
 WORKDIR /lcbot
 RUN python3 -m venv .venv &&\
@@ -45,9 +48,5 @@ CMD ./client_linux --user lc0docker --password lc0docker
 
 FROM botbase as lcbot
 COPY --from=builder /lc0/bin /lc0/bin
-COPY --from=builder /lcbot /lcbot
+COPY --from=botBuilder /lcbot /lcbot
 WORKDIR /lcbot
-
-FROM lcbot
-WORKDIR /lc0/bin
-CMD ./client_linux --user lc0docker --password lc0docker
