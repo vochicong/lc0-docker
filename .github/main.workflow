@@ -1,11 +1,11 @@
 workflow "Build and Publish" {
   on = "push"
-  resolves = ["Test lcbot", "Publish lc0"]
+  resolves = ["Test lcbot", "Publish lc0", "Publish lc0 CPU"]
 }
 
 action "Build lc0" {
   uses = "actions/docker/cli@master"
-  args = "build --target lc0 -t vochicong/lc0-nvidia-docker ."
+  args = "build --target lc0 -t vochicong/lc0-docker:gpu ."
 }
 
 action "Test lcbot" {
@@ -29,5 +29,16 @@ action "Login" {
 action "Publish lc0" {
   needs = ["Login", "Build lc0"]
   uses = "actions/docker/cli@master"
-  args = "push vochicong/lc0-nvidia-docker"
+  args = "push vochicong/lc0-docker:gpu"
+}
+
+action "Build lc0 CPU" {
+  uses = "actions/docker/cli@master"
+  args = "build --target lc0 -t vochicong/lc0-docker:cpu cpu"
+}
+
+action "Publish lc0 CPU" {
+  needs = ["Login", "Build lc0 CPU"]
+  uses = "actions/docker/cli@master"
+  args = "push vochicong/lc0-docker:cpu"
 }
