@@ -40,17 +40,11 @@ action "Publish lc0" {
 
 action "Build lc0 CPU" {
   uses = "actions/docker/cli@master"
-  args = "build --target lc0 -t cpu cpu"
-}
-
-action "Tag lc0 CPU" {
-  needs = ["Build lc0 CPU"]
-  uses = "actions/docker/tag@master"
-  args = "cpu vochicong/lc0-docker --no-latest"
+  args = "build --target lc0 -t vochicong/lc0-docker:cpu cpu"
 }
 
 action "Publish lc0 CPU" {
-  needs = ["Login", "Tag lc0 CPU"]
+  needs = ["Login", "Build lc0 CPU"]
   uses = "actions/docker/cli@master"
-  args = "push vochicong/lc0-docker"
+  args = "push vochicong/lc0-docker:cpu"
 }
