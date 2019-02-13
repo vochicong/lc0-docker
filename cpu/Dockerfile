@@ -17,7 +17,7 @@ RUN apt-get update &&\
     apt-get clean all
 RUN pip3 install meson
 
-# Build latest lc0 release
+# Download latest lc0 release
 RUN curl -s -L https://github.com/LeelaChessZero/lc0/releases/latest |\
     egrep -o '/LeelaChessZero/lc0/archive/v.*.tar.gz' |\
     wget --base=https://github.com/ -O lc0latest.tgz -i - &&\
@@ -25,15 +25,16 @@ RUN curl -s -L https://github.com/LeelaChessZero/lc0/releases/latest |\
 WORKDIR /lc0
 RUN CC=clang-6.0 CXX=clang++-6.0 INSTALL_PREFIX=/lc0 \
     ./build.sh release && ls /lc0/bin
+WORKDIR /lc0/bin
+RUN curl -s -L https://github.com/LeelaChessZero/lczero-client/releases/latest |\
+        egrep -o '/LeelaChessZero/lczero-client/releases/download/v.*/client_linux' |\
+        head -n 1 | wget --base=https://github.com/ -i - &&\
+    chmod +x client_linux
 
-# Build lczero-client
-FROM golang as clientBuilder
-RUN go get -u github.com/Tilps/chess &&\
-    go get -u github.com/nightlyone/lockfile
-RUN git clone https://github.com/LeelaChessZero/lczero-client /lc0
-WORKDIR /lc0
-ENV GOPATH=/go:/lc0
-RUN go build -o client_linux lc0_main.go
+FROM lc0base as lc0
+COPY --from=builder /lc0/bin /lc0/bin
+WORKDIR /lc0/bin
+CMD ./client_linux --user lc0docker --password lc0docker
 
 FROM builder as botBuilder
 RUN apt-get update &&\
@@ -44,12 +45,6 @@ RUN python3 -m venv .venv &&\
     . .venv/bin/activate &&\
     pip3 install wheel &&\
     pip3 install -r requirements.txt
-
-FROM lc0base as lc0
-COPY --from=builder /lc0/bin /lc0/bin
-COPY --from=clientBuilder /lc0/client_linux /lc0/bin/client_linux
-WORKDIR /lc0/bin
-CMD ./client_linux --user lc0docker --password lc0docker
 
 FROM botbase as lcbot
 COPY --from=builder /lc0/bin /lc0/bin
