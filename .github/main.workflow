@@ -5,7 +5,13 @@ workflow "Build and Publish" {
 
 action "Build lc0" {
   uses = "actions/docker/cli@master"
-  args = "build --target lc0 -t vochicong/lc0-docker:gpu ."
+  args = "build --target lc0 -t gpu ."
+}
+
+action "Tag lc0" {
+  needs = ["Build lc0"]
+  uses = "actions/docker/tag@master"
+  args = "gpu vochicong/lc0-docker"
 }
 
 action "Test lcbot" {
@@ -27,18 +33,24 @@ action "Login" {
 }
 
 action "Publish lc0" {
-  needs = ["Login", "Build lc0"]
+  needs = ["Login", "Tag lc0"]
   uses = "actions/docker/cli@master"
-  args = "push vochicong/lc0-docker:gpu"
+  args = "push vochicong/lc0-docker"
 }
 
 action "Build lc0 CPU" {
   uses = "actions/docker/cli@master"
-  args = "build --target lc0 -t vochicong/lc0-docker:cpu cpu"
+  args = "build --target lc0 -t cpu cpu"
+}
+
+action "Tag lc0 CPU" {
+  needs = ["Build lc0 CPU"]
+  uses = "actions/docker/tag@master"
+  args = "cpu vochicong/lc0-docker --no-latest"
 }
 
 action "Publish lc0 CPU" {
-  needs = ["Login", "Build lc0 CPU"]
+  needs = ["Login", "Tag lc0 CPU"]
   uses = "actions/docker/cli@master"
-  args = "push vochicong/lc0-docker:cpu"
+  args = "push vochicong/lc0-docker"
 }
