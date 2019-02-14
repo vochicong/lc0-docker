@@ -9,7 +9,7 @@ under [Docker](https://docs.docker.com/install/) or
 
 To download and run the prebuilt Docker image
 
-    docker run --runtime nvidia --rm -it vochicong/lc0-docker:gpu # for NVIDIA GPU
+    docker run --runtime nvidia --rm -it vochicong/lc0-docker # for NVIDIA GPU
 
 or
 

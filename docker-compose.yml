@@ -1,7 +1,7 @@
 version: '2.3'
 services:
   lc0: &lc0
-    image: vochicong/lc0-docker:gpu
+    image: vochicong/lc0-docker
     build:
       context: .
       target: lc0
