@@ -23,6 +23,10 @@ or
 
     docker-compose up cpu # for CPU
 
+## Kubernetes
+
+See [k8s.yaml](k8s.yaml) for a sample configuration.
+
 # Run Lc0 with lichess-bot
 
 - Clone this repository, `cd lc0-nvdia-docker`

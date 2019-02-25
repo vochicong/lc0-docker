@@ -1,0 +1,31 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: lc0
+  name: lc0
+  namespace: lc0
+spec:
+  selector:
+    matchLabels:
+      app: lc0
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: lc0
+    spec:
+      containers:
+      - image: localhost:32000/lc0-docker
+        imagePullPolicy: Always
+        name: lc0-docker
+        resources:
+          requests:
+            memory: "1024Mi"
+            cpu: "1000m"
+          limits:
+            memory: "2048Mi"
+            cpu: "2000m"
+            nvidia.com/gpu: 1
