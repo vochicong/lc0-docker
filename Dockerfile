@@ -32,7 +32,7 @@ RUN curl -s -L https://github.com/LeelaChessZero/lczero-client/releases/latest |
     chmod +x client_linux
 
 FROM lc0base as lc0
-LABEL version="gpu-lc0_v0.20.2-client_v0.21.0 "
+LABEL "version"="lc0_v0.21.0-client_v0.21.0 "
 COPY --from=builder /lc0/bin /lc0/bin
 WORKDIR /lc0/bin
 CMD ./client_linux --user lc0docker --password lc0docker
