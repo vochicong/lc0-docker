@@ -26,30 +26,3 @@ services:
         sed "s/LICHESS_API_TOKEN/$LICHESS_API_TOKEN/" configtmp.yml > config.yml
         . .venv/bin/activate
         python lichess-bot.py
-
-  cpu:
-    image: vochicong/lc0-docker:cpu
-    runtime: runc
-    build:
-      context: cpu
-      target: lc0
-    env_file:
-      - .env
-
-  lcbot-cpu:
-    build:
-      context: cpu
-      target: lcbot
-    volumes:
-      - ./lcbot-config.yml:/lcbot/configtmp.yml
-      - ./lc0.config:/lc0/bin/lc0.config
-      - ./data:/data
-      - ./log:/lcbot/log
-    command:
-      - sh
-      - -c
-      - |
-        ls -l /data/networks/weights_run2_32194.pb.gz
-        sed "s/LICHESS_API_TOKEN/$LICHESS_API_TOKEN/" configtmp.yml > config.yml
-        . .venv/bin/activate
-        python lichess-bot.py
