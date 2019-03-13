@@ -6,7 +6,7 @@ under [NVIDIA docker](https://github.com/NVIDIA/nvidia-docker).
 
 # Run Lc0 self-play training games
 
-To download and run the prebuilt Docker image
+To download and run the [prebuilt Docker image](https://hub.docker.com/r/vochicong/lc0-docker)
 
     docker run --runtime nvidia --rm -it vochicong/lc0-docker
 
