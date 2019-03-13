@@ -18,7 +18,7 @@ spec:
         app: lc0
     spec:
       containers:
-      - image: localhost:32000/lc0-docker
+      - image: vochicong/lc0-docker:v0.21.0
         imagePullPolicy: Always
         name: lc0-docker
         resources:
