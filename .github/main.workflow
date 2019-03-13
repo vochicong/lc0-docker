@@ -20,14 +20,14 @@ action "Test lcbot" {
   args = "build --target lcbot ."
 }
 
-action "Publish Filter" {
-  needs = ["Build lc0"]
-  uses = "actions/bin/filter@master"
-  args = "branch master"
-}
+# action "Publish Filter" {
+#   needs = ["Build lc0"]
+#   uses = "actions/bin/filter@master"
+#   args = "branch master"
+# }
 
 action "Login" {
-  needs = ["Publish Filter"]
+  # needs = ["Publish Filter"]
   uses = "actions/docker/login@master"
   secrets = ["DOCKER_USERNAME", "DOCKER_PASSWORD"]
 }
