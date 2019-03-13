@@ -27,7 +27,10 @@ action "Test lcbot" {
 # }
 
 action "Login" {
-  # needs = ["Publish Filter"]
+  needs = [
+    # "Publish Filter",
+    "Build lc0",
+  ]
   uses = "actions/docker/login@master"
   secrets = ["DOCKER_USERNAME", "DOCKER_PASSWORD"]
 }
