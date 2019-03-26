@@ -1,7 +1,7 @@
 FROM nvidia/cuda:10.0-cudnn7-runtime as lc0base
 RUN apt-get update &&\
     apt-get install -y libopenblas-base libprotobuf10 zlib1g-dev \
-            ocl-icd-libopencl1 tzdata &&\
+    ocl-icd-libopencl1 tzdata &&\
     apt-get clean all
 
 FROM lc0base as botbase
@@ -10,10 +10,11 @@ RUN apt-get update &&\
     apt-get clean all
 
 FROM nvidia/cuda:10.0-cudnn7-devel as builder
+LABEL "version"="lc0_v0.21.1-client_v0.22.0 "
 RUN apt-get update &&\
     apt-get install -y curl wget supervisor git \
-            clang-6.0 libopenblas-dev ninja-build protobuf-compiler libprotobuf-dev \
-            python3-pip &&\
+    clang-6.0 libopenblas-dev ninja-build protobuf-compiler libprotobuf-dev \
+    python3-pip &&\
     apt-get clean all
 RUN pip3 install meson
 
@@ -27,12 +28,11 @@ RUN CC=clang-6.0 CXX=clang++-6.0 INSTALL_PREFIX=/lc0 \
     ./build.sh release && ls /lc0/bin
 WORKDIR /lc0/bin
 RUN curl -s -L https://github.com/LeelaChessZero/lczero-client/releases/latest |\
-        egrep -o '/LeelaChessZero/lczero-client/releases/download/v.*/client_linux' |\
-        head -n 1 | wget --base=https://github.com/ -i - &&\
+    egrep -o '/LeelaChessZero/lczero-client/releases/download/v.*/client_linux' |\
+    head -n 1 | wget --base=https://github.com/ -i - &&\
     chmod +x client_linux
 
 FROM lc0base as lc0
-LABEL "version"="lc0_v0.21.0-client_v0.21.0 "
 COPY --from=builder /lc0/bin /lc0/bin
 WORKDIR /lc0/bin
 CMD ./client_linux --user lc0docker --password lc0docker
