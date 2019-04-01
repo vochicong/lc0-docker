@@ -10,7 +10,7 @@ To download and run the [prebuilt Docker image](https://hub.docker.com/r/vochico
 
     docker run --runtime nvidia --rm -it vochicong/lc0-docker
 
-otherwise, clone this repository then build and run by
+otherwise, clone this repository then run
 
     docker-compose up lc0
 
@@ -18,6 +18,15 @@ otherwise, clone this repository then build and run by
 ## Kubernetes
 
 See [k8s.yaml](k8s.yaml) for a sample configuration.
+
+## Version
+
+The docker image is tagged by [lc0 release version](https://github.com/LeelaChessZero/lc0/releases),
+see
+[.github/main.workflow](.github/main.workflow),
+[k8s.yaml](k8s.yaml)
+and
+[docker-compose.yml](docker-compose.yml).
 
 # Run Lc0 with lichess-bot
 
