@@ -1,6 +1,8 @@
 version: "2.3"
 services:
   lc0: &lc0
+    mem_limit: "2048m"
+    cpus: 1.5
     image: vochicong/lc0-docker:v0.21.1
     build:
       context: .
