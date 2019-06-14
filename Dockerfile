@@ -10,7 +10,7 @@ RUN apt-get update &&\
     apt-get clean all
 
 FROM nvidia/cuda:10.0-cudnn7-devel as builder
-LABEL "version"="lc0_v0.21.1-client_v0.22.0 "
+LABEL "version"="lc0_v0.21.2-client_v0.22.0 "
 RUN apt-get update &&\
     apt-get install -y curl wget supervisor git \
     clang-6.0 libopenblas-dev ninja-build protobuf-compiler libprotobuf-dev \
