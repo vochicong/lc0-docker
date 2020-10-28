@@ -10,7 +10,6 @@ RUN apt-get update &&\
     apt-get clean all
 
 FROM nvidia/cuda:10.0-cudnn7-devel as builder
-LABEL "version"="lc0_v0.21.2-client_v0.22.0 "
 RUN apt-get update &&\
     apt-get install -y curl wget supervisor git \
     clang-6.0 libopenblas-dev ninja-build protobuf-compiler libprotobuf-dev \
@@ -18,7 +17,7 @@ RUN apt-get update &&\
     apt-get clean all
 RUN pip3 install meson
 
-# Download latest lc0 release
+LABEL "version"="lc0_v0.26.3-client_v29"
 RUN curl -s -L https://github.com/LeelaChessZero/lc0/releases/latest |\
     egrep -o '/LeelaChessZero/lc0/archive/v.*.tar.gz' |\
     wget --base=https://github.com/ -O lc0latest.tgz -i - &&\
@@ -28,14 +27,16 @@ RUN CC=clang-6.0 CXX=clang++-6.0 INSTALL_PREFIX=/lc0 \
     ./build.sh release && ls /lc0/bin
 WORKDIR /lc0/bin
 RUN curl -s -L https://github.com/LeelaChessZero/lczero-client/releases/latest |\
-    egrep -o '/LeelaChessZero/lczero-client/releases/download/v.*/client_linux' |\
+    egrep -o '/LeelaChessZero/lczero-client/releases/download/v.*/lc0-training-client-linux' |\
     head -n 1 | wget --base=https://github.com/ -i - &&\
-    chmod +x client_linux
+    chmod +x lc0-training-client-linux &&\
+    mv lc0-training-client-linux lc0client
 
 FROM lc0base as lc0
 COPY --from=builder /lc0/bin /lc0/bin
 WORKDIR /lc0/bin
-CMD ./client_linux --user lc0docker --password lc0docker
+ENV PATH=/lc0/bin:$PATH
+CMD lc0client --user lc0docker --password lc0docker
 
 FROM builder as botBuilder
 RUN apt-get update &&\
